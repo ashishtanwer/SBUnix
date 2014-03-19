@@ -1,4 +1,2 @@
-SBUnix
+sbunix
 ======
-
-Stony Brook Unix

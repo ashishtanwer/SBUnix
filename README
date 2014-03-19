@@ -1,0 +1,51 @@
+                              Project: SBUnix (Preemtive OS + FileSystem + Networking)
+
+Submission by Ashish Tanwer and Shashank Gupta 
+License: Apache License v2
+
+We are very thankful to Professor Ferdman, for such an excellent course and guidance without which completion the project was not possible.
+1. Osdevwiki and Forum
+2. AMD64 Architecture Programmer's Manual Volume 2: System Programming
+3. BRAN(OSDEVER
+4. BROKENTHORN
+
+Reference OS (x64):
+1. HelenOS-0.5.0
+2. Shovelos (Warmup)
+3. IanOS (Memory and Paging)
+4. crocos-0.2
+5. mikeos-4.4
+
+Features ::
+1. Warm up:: Kernel printf, Timer, Keyboard, GDT, IDT, handlers
+2. Physical Memory, Virtual Memory, Mapping
+3. 4-Level Paging, CR3 setup, Ring 0-Ring 3 switch
+4.  Process management, fork
+5. Tarfs and Elf Loading
+6. System Calls: read, write, sbrk, exit, sleep, fork, wait, waiting_with_pid, exec
+7. Binaries: ls, pwd, sleep, shell 
+8. FileSystems ::  PCI and AHCI initialization; VFS, Simple FS
+FILE SYSTEMS (AshishFS) API: fopen, fclose, fseek, fwrite, fread, opendir, read_dir_ls, closedir, make_dir_vfs 
+STEPS (to create new FS)
+a. rm hdd.img
+b. qemu-img create -f raw hdd.img 20M
+c. dd if=superblock of=hdd.img seek=1 conv=notrunc
+9. e1000 driver and data transmission
+
+MEMORY MAP
+               PHY          VIRT
+physbase       0x200000     0xffffffff80200000
++234 AHCI      0x2ea800     0xffffffff802ea800 
++30  ???       0x2c7800     0xFFFFFFFF8031A800
++240 ADD       0x3b7800     0xFFFFFFFF803b7800
+physfree       0x3fd000     0xFFFFFFFF803fd000
+VGA            0x0000b8000  0xffffffff803fd000
+AHCI_MMIO      0xfebf0000   0xffffffff80402000 
+e1000_MMIO     0xfebc0000   0xffffffff80403000
+               0xfebc3000   0xffffffff80406000 
+virtualaddr                 0xFFFFFFFF80423000
+IDEN_S         0x0          0xFFFFFFFFF0000000
+IDEN_E         0x7fff000    0xfffffffff7fff000 
+ 
+QEMU Command
+qemu-system-x86_64 -curses -cdrom $USER.iso -net nic -net user,hostfwd=tcp::10080-:80 -net user,hostfwd=tcp::10023-:23 -drive id=disk,file=hdd.img,if=none -device ahci,id=ahci -device ide-drive,drive=disk,bus=ahci.0 -gdb tcp::1234
